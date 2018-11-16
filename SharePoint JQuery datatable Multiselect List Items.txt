@@ -1,0 +1,112 @@
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.6/css/fixedColumns.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.7/css/select.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript" charset="utf8" ></script>
+<script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js" type="text/javascript" charset="utf8" ></script>
+
+
+
+<script>
+
+$(document).ready(function() {
+	retrieveListItems();
+ 
+} );
+
+var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('mylist')/items?$select=Title,Id&$top=5000";
+var listData =[];
+
+function retrieveListItems()
+{
+        $.ajax({
+                   url: url,
+                   method: "GET",
+                   headers: { "Accept": "application/json; odata=verbose" },
+                   success: function (data) {
+				  			   			   
+				   listData.push(data.d.results);
+				
+		if(data.d.__next)
+		{
+			url = data.d.__next;
+			retrieveListItems();
+		}
+		
+		if(data.d.__next == undefined)
+		{
+		console.log(listData.length);	
+		for(var i=0;i<listData.length;i++)
+		{
+			for(var j=0;j<listData[i].length;j++)
+			{
+				$('#tablebody').append("<tr id='" +listData[i][j].Id+ "'>"  + "<td></td>" +  "<td>"+ listData[i][j].Title + "</td><td>" + listData[i][j].Title + "</td><td>" +listData[i][j].Title + "</td>" + "</tr>");
+			}
+		}
+		
+			
+		}
+		
+		
+					        
+                  },
+                  error: function (data) {
+                      alert("Error: "+ data);
+                 }
+          
+    });
+
+}
+
+var table;
+//var rows_selected = table.column(0).checkboxes.selected();
+function createTable()
+{
+	 table = $('#example').DataTable( {
+        
+        columnDefs: [ {
+            orderable: false,
+            className: 'select-checkbox',
+            targets:   0
+        } ],
+        select: {
+            style:    'multi',
+           
+        },
+        order: [[ 1, 'asc' ]]
+    } );
+	    
+	
+}
+
+function getSelectedItem()
+{
+	table = $('#example').DataTable();
+	var ids = table.rows( { selected: true } ).ids();
+	console.log(ids);
+	
+}
+</script>
+<button type="button" onclick="createTable()">Create Table</button>
+<button type="button" onclick="getSelectedItem()">Selected Items</button>
+
+
+<table id="example">
+        <thead>
+            <tr>
+			<th></th>
+                <th>Title</th>
+				 <th>Title</th>
+				  <th>Title</th>
+				  
+            </tr>
+        </thead>
+        <tbody id="tablebody">
+         
+           
+        </tbody>
+    </table>
+
+
+
