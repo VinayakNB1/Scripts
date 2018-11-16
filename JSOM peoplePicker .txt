@@ -1,0 +1,100 @@
+﻿
+					 				 
+<script src="/_layouts/15/clienttemplates.js" type="text/javascript"></script> 
+<script src="/_layouts/15/clientforms.js" type="text/javascript"></script> 
+<script src="/_layouts/15/clientpeoplepicker.js" type="text/javascript"></script> 
+<script src="/_layouts/15/autofill.js" type="text/javascript"></script> 
+<script src="/_layouts/15/sp.js" type="text/javascript"></script> 
+<script src="/_layouts/15/sp.runtime.js" type="text/javascript"></script> 
+<script src="/_layouts/15/sp.core.js" type="text/javascript"></script> 
+
+<script>
+  $(document).ready(function() {  
+   // Specify the unique ID of the DOM element where the  
+   // picker will render.  
+   initializePeoplePicker('peoplePickerDiv');  
+    });  
+	
+	function setUsers()
+	{
+		var divPeople = SPClientPeoplePicker.SPClientPeoplePickerDict.peoplePickerDiv_TopSpan;
+// PeoplePickerDiv_TopSpan - Specify the unique ID of the DOM element where the picker will render.
+var userObj = [{'Key': "i:0ǵ.t|extidp|a630983"},{'Key':"i:0ǵ.t|extidp|a665588"}];
+for(var i=0;i<userObj.length;i++)
+{
+	divPeople.AddUnresolvedUser(userObj[i], true);
+}
+	}
+	
+   // Render and initialize the client-side People Picker.  
+   function initializePeoplePicker(peoplePickerElementId) {  
+    // Create a schema to store picker properties, and set the properties.  
+    var schema = {};  
+    schema['PrincipalAccountType'] = 'User,DL,SecGroup,SPGroup';  
+    //This value specifies where you would want to search for the valid values
+    schema['SearchPrincipalSource'] = 15;             
+    //This value specifies where you would want to resolve for the valid values
+    schema['ResolvePrincipalSource'] = 15;  
+         schema['AllowMultipleValues'] = true;  
+    schema['MaximumEntitySuggestions'] = 50;  
+    schema['Width'] = '280px';  
+    // Render and initialize the picker.  
+   // Pass the ID of the DOM element that contains the picker, an array of initial   
+   // PickerEntity objects to set the picker value, and a schema that defines  
+   // picker properties.              
+  this.SPClientPeoplePicker_InitStandaloneControlWrapper(
+  peoplePickerElementId, null, schema);  
+                          }
+                          // Get user information from client side people picker.
+                         // Query the picker for user information.
+
+   function getUserInfo() {
+    // Get the people picker object from the page.
+    var peoplePicker = this.SPClientPeoplePicker.SPClientPeoplePickerDict.peoplePickerDiv_TopSpan;
+   // Get information about all users.
+   var users = peoplePicker.GetAllUserInfo();
+   console.log(users.length);
+   var userInfo = '';
+   for (var i = 0; i < users.length; i++) {
+   var user = users[i];
+ for (var userProperty in user) {
+ userInfo += userProperty + ':  ' + user[userProperty] + '<br>';
+ }
+// console.log(userInfo);
+ }
+   // Get user keys.
+   var keys = peoplePicker.GetAllUserKeys();
+   console.log(keys);
+   // Get the first user's ID by using the login name.
+   getUserId(users[0].Key);
+  }
+ // Get the user ID.
+ function getUserId(loginName) {
+ var context = new SP.ClientContext.get_current();
+ this.user = context.get_web().ensureUser(loginName);
+ context.load(this.user);
+ context.executeQueryAsync(
+ Function.createDelegate(null, ensureUserSuccess),
+ Function.createDelegate(null, onFail)
+ );
+ }
+ function ensureUserSuccess() {
+ console.log(this.user.get_id());
+ }
+ function onFail(sender, args) {
+ alert('Query failed. Error: ' + args.get_message());
+ }
+
+                         // Below code sets values into client side people picker.
+ var divPeople = SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan;
+// PeoplePickerDiv_TopSpan - Specify the unique ID of the DOM element where the picker will render.
+var userObj = { 'Key': "i:0ǵ.t|extidp|USERNAME" };
+divPeople.AddUnresolvedUser(userObj, true);
+
+</script>
+
+
+<div id="peoplePickerDiv"></div>
+ <button type="button" onclick="setUsers()">Set Users</button>
+ 
+ 
