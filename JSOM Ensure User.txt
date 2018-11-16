@@ -1,0 +1,14 @@
+var context = SP.ClientContext.get_current();
+var theUser = context.get_web().ensureUser("DEV\testowner");
+context.load(theUser);
+
+context.executeQueryAsync(function(){
+
+ alert(theUser.get_title());
+
+},
+function(sender, args){
+
+  alert(args.get_message());
+
+});
