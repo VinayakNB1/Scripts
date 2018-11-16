@@ -1,0 +1,11 @@
+//First we must call the EnsureSetup method
+
+JSRequest.EnsureSetup(); 
+
+//Get a query string parameter called Id. i.e - "page.aspx?Id=11" will return 11
+
+var account = JSRequest.QueryString["account"];
+
+var projectName = JSRequest.QueryString["projectname"];
+
+var pcode = JSRequest.QueryString["pcode"];
