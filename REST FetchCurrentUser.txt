@@ -1,0 +1,18 @@
+function fetchCurrentUser()
+{
+        $.ajax({
+                   url: siteurl + "/_api/web/currentuser",
+                   method: "GET",
+                   headers: { "Accept": "application/json; odata=verbose" },
+                   success: function (data) {
+		   console.log(data);  
+		
+					        
+                  },
+                  error: function (data) {
+                      alert("Error: "+ data);
+                 }
+          
+    });
+	
+}
