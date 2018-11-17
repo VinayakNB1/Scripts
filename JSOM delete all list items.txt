@@ -1,0 +1,36 @@
+<script language="javascript" type="text/javascript">
+
+_spBodyOnLoadFunctionNames.push("clearlist");
+
+var btnclearlistStatus = '0';
+
+function btnclearlistClick(){
+btnclearlistStatus = '1';
+clearlist();
+}
+
+function clearlist(){
+
+if(btnclearlistStatus=='1'){
+var ctx = SP.ClientContext.get_current();
+   list = ctx.get_web().get_lists().getByTitle('List name');
+   query = new SP.CamlQuery();
+   items = list.getItems(query);
+ctx.load(items, "Include(Id)");
+ctx.executeQueryAsync(function () {
+    var enumerator = items.getEnumerator();
+        simpleArray = [];
+    while (enumerator.moveNext()) {
+        simpleArray.push(enumerator.get_current());
+    }
+    for (var s in simpleArray) {
+        simpleArray[s].deleteObject();
+    console.log(s);
+    }
+    ctx.executeQueryAsync(function(){alert('All the items in the list are cleared..')},function(){console.log('Failed to delete items')});
+},function(){console.log('Failed to load items from Subscriptions list')});
+}
+}
+
+
+</script><input onclick="btnclearlistClick()" type="button" value="CLEAR LIST"/>
