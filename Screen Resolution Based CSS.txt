@@ -1,0 +1,17 @@
+@media only screen 
+and (min-width : 1366px) 
+{
+//insert style css code here   
+
+}
+
+
+@media only screen 
+and (min-width : 1440px) 
+{
+//insert style css code here   
+
+ 
+}
+
+
