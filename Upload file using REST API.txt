@@ -1,0 +1,80 @@
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+
+<script>
+//Function attached to the html fileupload tag (<input type="file">)
+function uploadFile()
+{
+    if(document.getElementById("file").files.length === 0) 
+	{
+        alert('No file was selected');
+        return;
+    }
+    var parts = document.getElementById("file").value.split("\\");
+    var filename = parts[parts.length - 1];
+    var file = document.getElementById("file").files[0];
+    uploadFileSync("https://spstg2013.myatos.net/si/operations/tooling/kisupport/","Docs", filename, file);
+}
+
+</script>
+<script>
+//Upload file synchronously
+function uploadFileSync(spWebUrl,library,filename,file) 
+{
+    var reader = new FileReader();
+    reader.onloadend = function(evt) 
+    {
+      if (evt.target.readyState == FileReader.DONE) 
+      {
+         var buffer = evt.target.result;
+         var completeUrl = spWebUrl
+           + "/_api/web/lists/getByTitle('"+ library +"')"
+           + "/RootFolder/Files/add(url='"+ filename +"',overwrite='true')?"
+           + "@TargetLibrary='"+library+"'&@TargetFileName='"+ filename +"'";
+
+          $.ajax({
+                url: completeUrl,
+                type: "POST",
+                data: buffer,
+                async: false,
+                processData: false,
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+                    "content-length": buffer.byteLength
+                },
+                complete: function (data) {
+                    //uploaded pic url
+                    console.log(data.responseJSON.d.ServerRelativeUrl);
+                },
+                error: function (err) {
+                     alert('failed');
+                }
+            });
+        
+      }
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+
+</script>
+<input type="file" id='file' onchange="uploadFile()"/>
+
+<script>
+//Function attached to the html fileupload tag (<input type="file">)
+function uploadFile()
+{
+    if(document.getElementById("file").files.length === 0) 
+	{
+        alert('No file was selected');
+        return;
+    }
+    var parts = document.getElementById("file").value.split("\\");
+    var filename = parts[parts.length - 1];
+    var file = document.getElementById("file").files[0];
+    uploadFileSync("your site url","Docs", filename, file);
+}
+
+</script>

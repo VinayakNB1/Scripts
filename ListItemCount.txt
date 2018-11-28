@@ -1,0 +1,14 @@
+var siteURL = _spPageContextInfo.webAbsoluteUrl;
+
+ $.ajax({
+                url: siteURL + "/_api/web/lists/GetByTitle('TestDataList')/ItemCount",
+                method: "GET",
+                headers: { "Accept": "application/json; odata=verbose" },
+                success: function (data) {
+				var itemscount = data.d.ItemCount;
+                   console.log('ItemCount ' + itemscount);
+                },
+                error: function (data) {
+                    console.log("Error: "+ data);
+                }
+            });
