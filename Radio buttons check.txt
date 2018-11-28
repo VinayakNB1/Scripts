@@ -1,0 +1,15 @@
+var names = {};
+$('input:radio').each(function() { // find unique names
+      names[$(this).attr('name')] = true;
+});
+
+var count = 0;
+$.each(names, function() 
+{ // then count them
+      count++;
+});
+
+if($('input:radio:checked').length == count) 
+{
+      
+}
