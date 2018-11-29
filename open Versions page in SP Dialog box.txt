@@ -1,0 +1,31 @@
+ <script type="text/javascript" src="/_layouts/15/SP.Core.js" />
+  <script type="text/javascript" src="/_layouts/15/SP.Debug.js" />
+  <script type="text/javascript" src="/_layouts/15/SP.Runtime.Debug.js" />
+  <script type="text/javascript" src="/_layouts/15/SP.js" />
+  <script type="text/javascript" src="/_layouts/15/sp.ui.dialog.js"></script>
+  <script type="text/javascript" src="/_layouts/15/ScriptResx.ashx?name=sp.res&culture=en-us"></script>
+  <script type="text/javascript" src="/_layouts/15/sp.init.js"></script>
+
+<script>
+
+function openVersionsDialog(Id)
+{
+	var itemid = Id;
+	var listid = listGUID;
+
+	
+	var options = SP.UI.$create_DialogOptions();
+    
+        options.title= "Title",
+        options.url = siteurl + '/_layouts/15/Versions.aspx?list=' + listid + '&ID=' + itemid;
+        options.width = 650;
+        options.height = 700;
+        options.dialogReturnValueCallback = Function.createDelegate(null, null);
+        SP.UI.ModalDialog.showModalDialog(options);
+//to avoid page refresh
+return false;
+}
+
+</script>
+
+<button type="button" onclick="return openVersionsDialog(Id)">open version dialog<button>
