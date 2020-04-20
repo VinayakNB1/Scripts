@@ -1,0 +1,7 @@
+Go to IIS
+Select your WebApp
+Right Click Explore
+Open Web.Config
+Search CallStack set it to true
+Search CustomError set it to off
+Refresh in browser it will display trace of error
