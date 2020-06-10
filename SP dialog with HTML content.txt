@@ -1,0 +1,11 @@
+var messageElement = document.createElement('div');
+messageElement.style.textAlign = "center"
+messageElement.innerHTML = "<span id='errorMessage' style='color:red;font-size:18px'>" + "Something went wrong!" + "</span><br><span style='color:red;font-size:16px'>Error occured while fetching record</span>";
+
+SP.UI.ModalDialog.showModalDialog({
+    html: messageElement,
+    title: "",
+    allowMaximize: false,
+    showClose: true,
+    autoSize: true
+ });

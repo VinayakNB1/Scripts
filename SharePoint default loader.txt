@@ -1,0 +1,20 @@
+//https://blog.collabware.com/2013/03/22/tips-tricks-sharepoint-2013-modal-dialogs
+var waitDialog = null;
+function RequestEnded(sender, args) {
+  try {
+    waitDialog.close();
+    waitDialog = null;
+  } catch (ex) { }
+};
+
+function RequestStarted(sender, args) {
+   ExecuteOrDelayUntilScriptLoaded(ShowWaitDialog, "sp.js");
+};
+
+function ShowWaitDialog() {
+   try {
+      if (waitDialog == null) {
+         waitDialog = SP.UI.ModalDialog.showWaitScreenWithNoClose('Processing...', 'Please wait while request is in progress...', 76, 330);
+      }
+   } catch (ex) { }
+};

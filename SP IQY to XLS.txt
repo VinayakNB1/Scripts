@@ -1,0 +1,20 @@
+$workingDir = "c:\temp"
+
+$iqyFilePath = "c:\temp\owssvr.iqy"
+
+
+$excel = New-Object -ComObject Excel.Application
+
+$workbook = $excel.Workbooks.Open($iqyFilePath)
+
+$workbook.Worksheets | % {
+
+    $csvPath = $workingDir + "\$($_.name)" + ".csv" 
+
+    $_.saveas( $csvPath, 6 )
+
+}
+
+$workbook.close($false)
+
+$excel.quit()

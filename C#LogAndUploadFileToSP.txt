@@ -1,0 +1,85 @@
+//To create log text file and upload it to SharePoint library
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.SharePoint;
+
+namespace TestConsole
+{
+    class Program
+    {
+        public static StringBuilder logFileContent = new StringBuilder();
+
+        static void Main(string[] args)
+        {
+            using (SPSite site = new SPSite("siteURL")) 
+            {
+                using(SPWeb web = site.OpenWeb())
+                {
+                    WriteInfoInLog("Processing Started");
+                    WriteInfoInLog("Error occured in method Get List()");
+                    WriteInfoInLog("Processing Finished");
+                    WriteLogFile(web,"Test");
+                }
+
+            }
+        }
+
+       
+        public static void WriteInfoInLog(string message) 
+        {
+            try
+            {
+                var logMsg = DateTime.Now.ToString() + " - " + message + Environment.NewLine;
+                logFileContent.Append(logMsg);
+            }
+            catch(Exception ex) 
+            { 
+            
+            }
+        }
+
+        public static void WriteExceptionInLog(Exception ex) 
+        {
+            try 
+            {
+                string errorMsg = DateTime.Now.ToString() + " - " + "Error occured : " + ex.Message + " Source - " + ex.Source;
+                logFileContent.Append(errorMsg);
+            }
+            catch (Exception e) 
+            {
+            }
+            
+        }
+
+        public static void WriteLogFile(SPWeb web,string lenderName) 
+        {
+            try 
+            {
+                SPFolder folder = web.Folders["Logs"];
+                string fileName = lenderName + "_" + DateTime.Now.ToString("yyyyMMddHHmmss");
+                System.IO.Stream stream = new System.IO.MemoryStream();
+                using (StreamWriter sw = new StreamWriter(stream, Encoding.UTF8))
+                {
+                    string head = "Archive Job Log Written Date:" + " " + DateTime.Now.ToString();
+                    sw.WriteLine(head);
+                    sw.WriteLine("-------------------------------------------------------------------------------------");
+                    sw.WriteLine(logFileContent);
+                    sw.WriteLine("--------------------------------*End*------------------------------------------------");
+                    sw.Flush();
+                    folder.Files.Add(fileName + ".txt", stream, true);
+                    sw.Close();
+
+                }
+            }
+            catch (Exception ex) 
+            {
+            }
+            
+        }
+    }
+}

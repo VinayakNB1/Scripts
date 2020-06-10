@@ -1,0 +1,1 @@
+var openLink = "ms-word:ofe|u|" + file.ServerRelativeUrl;

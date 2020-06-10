@@ -1,0 +1,3 @@
+SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function() {
+        SP.UI.ModalDialog.commonModalDialogClose(1, 1);
+    });
